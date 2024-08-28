@@ -1457,13 +1457,11 @@ public abstract class NGNode {
         }
 
         if (node.cullingBits != 0) {
-            int mask = 0x11;
             for (int i=0; i<15; i++) {
-                int bits = node.cullingBits & mask;
+                int bits = (node.cullingBits >> (i * 2)) & DIRTY_REGION_CONTAINS_OR_INTERSECTS_NODE_BOUNDS;
                 if (bits != 0) {
-                    stuff.add(bits == 1 ? "i" + i : bits == 0 ? "c" + i : "ci" + i);
+                    stuff.add(bits == DIRTY_REGION_INTERSECTS_NODE_BOUNDS ? "i" + i : bits == DIRTY_REGION_CONTAINS_NODE_BOUNDS ? "c" + i : "ci" + i);
                 }
-                mask = mask << 2;
             }
         }
 
